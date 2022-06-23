@@ -1,7 +1,6 @@
 from database import *
 from useful import *
 
-
 Database()
 while True:
     header('MENU PRINCIPAL')

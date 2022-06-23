@@ -17,7 +17,7 @@ def points(s):
 
 
 def clear():
-    system('cls')
+    system('clear')
 
 
 def wait(n):
