@@ -1,0 +1,21 @@
+##### Query pra ver pesoas cadadastras e seus perfis #####
+
+SELECT P.id_pessoa, P.nome_pessoa, L.login, L.senha, L.perfil
+FROM pessoa P, login L, admin A
+WHERE A.id_pessoa = P.id_pessoa AND A.id_admin = L.id_admin
+UNION
+SELECT P. id_pessoa, P.nome_pessoa, L.login, L.senha, L.perfil
+FROM pessoa P, login L, cliente C
+WHERE C.id_pessoa = P.id_pessoa AND C.id_cliente = L.id_cliente;
+
+
+
+##### Visualizalçao mais detalhada das pessoas cadastradas #####
+
+SELECT P.id_pessoa, P.nome_pessoa, L.perfil, A.desde,E.logradouro, E.num, E.bairro, E.cidade, E.estado, E.cep
+FROM pessoa P, endereco E, login L, admin A
+WHERE (P.id_pessoa = A.id_pessoa AND L.id_admin = A.id_admin) AND P.id_pessoa = E.id_pessoa
+UNION
+SELECT P.id_pessoa, P.nome_pessoa, L.perfil, C.desde, E.logradouro, E.num, E.bairro, E.cidade, E.estado, E.cep
+FROM pessoa P, endereco E, login L, cliente C
+WHERE (P.id_pessoa = C.id_pessoa AND L.id_cliente = C.id_cliente) AND P.id_pessoa = E.id_pessoa;
