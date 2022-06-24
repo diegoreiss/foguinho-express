@@ -20,4 +20,8 @@ def end_points(msg):
         print('.', end='', flush=True)
         sleep(0.5)
     print()
-    system('clear')
+    system('cls')
+
+
+def mask_password(p):
+    pass
