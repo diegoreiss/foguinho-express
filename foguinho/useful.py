@@ -1,5 +1,6 @@
 from time import sleep
 from os import system
+from datetime import datetime
 import stdiomask
 
     
@@ -17,7 +18,7 @@ def header2(msg):
 
 def end_points(msg):
     print(msg, end='')
-    for _ in range(4):
+    for _ in range(3):
         print('.', end='', flush=True)
         sleep(0.5)
     print()
