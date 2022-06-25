@@ -1,5 +1,6 @@
 from time import sleep
 from os import system
+import stdiomask
 
     
 def header1(msg):
@@ -23,5 +24,11 @@ def end_points(msg):
     system('cls')
 
 
-def mask_password(p):
-    pass
+def format_date(d):
+    date = f'{d[:2]}-{d[2:4]}-{d[4:]}'
+    return date
+
+
+def mask_password():
+    senha = stdiomask.getpass(prompt='Senha: ', mask='*')
+    return senha

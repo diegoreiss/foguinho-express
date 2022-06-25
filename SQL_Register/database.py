@@ -7,7 +7,6 @@ def Database():
     with conn:
         cursor = conn.cursor()
         cursor.execute("CREATE TABLE IF NOT EXISTS `usuarios` (id_usuarios INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, nomeUsuario TEXT, senha TEXT)") # Cria uma tabela
-Database()
 
 
 def insert(n, s): # Adicionando valores a tabela

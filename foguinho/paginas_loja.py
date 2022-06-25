@@ -1,6 +1,7 @@
 from useful import *
 from os import system
 from time import sleep
+import main
 from cadastro import cadastro_admin, cadastro_cliente
 
 
@@ -10,17 +11,12 @@ def pagina_login():
         header2('LOGIN')
         print('\n[1] - Voltar\n')
         login = input('Login: ')
-
         if login == '1':
-            end_points('Voltando ao menu principal')
-            break    
-
-        senha = input('Senha: ')
-
-        if senha == '1':
-            end_points('Voltando ao menu principal')
             break
 
+        senha = mask_password()
+        if senha == '1':
+            break
 
 def pagina_cadastro():
     header2('CADASTRO')
@@ -33,8 +29,7 @@ def pagina_cadastro():
             system('cls')
             cadastro_cliente()
         case '3':
-            end_points('Voltando ao menu principal')
-            pass
+            back_to_home()
 
 
 def sair():
@@ -44,6 +39,7 @@ def sair():
             case 'S':
                 header1('VOLTE SEMPRE!')
                 sleep(2)
+                system('cls')
                 quit()
             case 'N':
                 system('cls')
@@ -51,3 +47,9 @@ def sair():
             case _:
                 print('Inválido! Informe corretamente?')
                 continue
+
+
+def back_to_home():
+        end_points('Voltando ao menu principal')
+        return True
+        
