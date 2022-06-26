@@ -1,6 +1,5 @@
 from time import sleep
-from os import system
-from datetime import datetime
+import os
 import stdiomask
 
     
@@ -22,7 +21,7 @@ def end_points(msg):
         print('.', end='', flush=True)
         sleep(0.5)
     print()
-    system('cls')
+    clear()
 
 
 def format_date(d):
@@ -33,3 +32,8 @@ def format_date(d):
 def mask_password():
     senha = stdiomask.getpass(prompt='Senha: ', mask='*')
     return senha
+
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    

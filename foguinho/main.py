@@ -1,11 +1,11 @@
 from time import sleep
-from os import system
 from datetime import datetime
 from random import randint
 from useful import *
+from database import *
 
-system('cls')
-
+clear()
+conexao()
 
 def main():
     while True:
@@ -13,17 +13,17 @@ def main():
         menu_principal = input('[1] - Login\n[2] - Cadastro\n\n[3] - Sair\n\n-> ')
         match menu_principal:
             case '1':
-                system('cls')
+                clear()
                 pagina_login()
             case '2':
-                system('cls')
+                clear()
                 pagina_cadastro()
             case '3':
                 sair()
             case _:
                 print('Inválido! Informe Corretamente!')
                 sleep(1)
-                system('cls')
+                clear()
                 continue
 
 
@@ -44,16 +44,77 @@ def pagina_login():
             end_points('Voltando ao menu principal')
             return main()
 
+        if validar_login(login, senha):
+            dados = pegar_dados(login, senha)
+            print('Login efetuado com sucesso!!!')
+            sleep(1)
+            print(f'Bem vindo {dados[1][0]}!!!')
+            sleep(1)
+            clear()
+            break
+        else:
+            print('Login ou senha incorreto, informe novamente!')
+            sleep(1)
+            clear()
+            continue
+    
+    match dados[2]:
+        case 'Administrador':
+            pagina_admin(login, senha)
+        case 'Cliente':
+            pagina_cliente(login, senha)
+    
 
+def pagina_admin(l, s):
+    while True:
+        header1('PÁGINA ADMIN')
+        opc = input('O que você deseja fazer?\n[1] - Gerenciar produtos\n[2] - Ver pessoas cadastradas\n\n[3] - Sair\n\n-> ')
+
+        match opc:
+            case '1':
+                pass
+            case '2':
+                pessoas_cadastradas()
+            case '3':
+                end_points('Saindo')
+                return pagina_login()
+            case _:
+                print('Inválido! Informe corretamente!')
+                sleep(1)
+                clear()
+                continue
+                
+def pagina_cliente(l, s):
+    while True:
+        header1('PÁGINA CLIENTE')
+        opc = input('O que você deseja fazer?\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n-> ')
+        
+        match opc:
+            case '1':
+                pass
+            case '2':
+                pass
+            case '3':
+                pass
+            case '4':
+                end_points('Saindo')
+                return pagina_login()
+            case _:
+                print('Inválido! Informe corretamente!')
+                sleep(1)
+                clear()
+                continue
+
+    
 def pagina_cadastro():
     header2('CADASTRO')
     opc = input('Qual cadastro deseja realizar?\n[1] - Admin        [3] - Sair\n[2] - Cliente\n-> ')
     match opc:
         case '1':
-            system('cls')
+            clear()
             cadastro_admin()
         case '2':
-            system('cls')
+            clear()
             cadastro_cliente()
         case '3':
             end_points('Voltando ao menu principal')
@@ -67,10 +128,10 @@ def sair():
             case 'S':
                 header1('VOLTE SEMPRE!')
                 sleep(2)
-                system('cls')
+                clear()
                 quit()
             case 'N':
-                system('cls')
+                clear()
                 break
             case _:
                 print('Inválido! Informe corretamente?')
@@ -82,12 +143,8 @@ def sair():
 
 def cadastro_pessoa():
     while True:
-        print('\n[1] - Voltar\n')
         nome_pessoa = input('Nome: ')
-        if nome_pessoa == '1':
-          end_points('Voltando ao menu de cadastro')
-          return pagina_cadastro()  
-        elif len(nome_pessoa) == 0 or nome_pessoa.isalpha() == False:
+        if len(nome_pessoa) == 0:
             print('Informe seu nome corretamente!!!')
             continue
         else:
@@ -95,10 +152,7 @@ def cadastro_pessoa():
 
     while True:
         dt_nasc_pessoa = input('Data de nascimento Ex:(ddmmaaaa): ')
-        if dt_nasc_pessoa == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
-        elif len(dt_nasc_pessoa) == 8:
+        if len(dt_nasc_pessoa) == 8:
             data_formatada = format_date(dt_nasc_pessoa)
             break
         else:
@@ -107,34 +161,39 @@ def cadastro_pessoa():
 
     while True:
         email_pessoa = input('Email: ')
-        if email_pessoa == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
         if '@' and '.' not in email_pessoa:
             print('Informe um email corretamente!!! Ex: exemplo@exemplo.com')
             continue
-        break
-
+        else:
+            break
+    
+    insert_pessoa(nome_pessoa, dt_nasc_pessoa, email_pessoa)
+    
 
 def cadastro_admin():
     header2('CADASTRO ADMIN')
     cadastro_pessoa()
     matricula = randint(100000, 999999)
     desde = datetime.today().strftime('%d-%m-%Y')
+    
+    insert_admin(matricula, desde)
+    
     while True:
         login_admin = input('Login: ')
-        if login_admin == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
+        if not validar_cadastro(login_admin):
+            print('Usuário ja existe!')
+            continue
+
         
         senha_admin = mask_password()
-        if senha_admin == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
         
         perfil = 'Administrador'
         
         break
+    
+    insert_admin_login(login_admin, senha_admin, perfil)
+    end_points('Voltando ao menu principal')
+    return main()
 
 
 def cadastro_cliente():
@@ -142,20 +201,24 @@ def cadastro_cliente():
     cadastro_pessoa()
     matricula = randint(100000, 999999)
     desde = datetime.today().strftime('%d-%m-%Y')
+    
+    insert_cliente(matricula, desde)
+    
     while True:
         login_cliente = input('Login: ')
-        if login_cliente == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
-        
+        if not validar_cadastro(login_cliente):
+            print('Usuário ja existe! Informe novamente')
+            sleep(1)
+            continue
+
         senha_cliente = mask_password()
-        if senha_cliente == '1':
-            end_points('Voltando ao menu de cadastro')
-            return pagina_cadastro()
-        
         perfil = 'Cliente'
-        
+
         break
+    
+    insert_cliente_login(login_cliente, senha_cliente, perfil)
+    end_points('Voltando ao menu principal')
+    return main()
     
 
 
