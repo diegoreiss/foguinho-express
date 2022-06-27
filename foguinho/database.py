@@ -227,7 +227,14 @@ def pessoas_cadastradas():
                 end_points('Saindo')
                 break
         
-        
+
+def insert_produto(n, v, c, a, id):
+    query = """
+        INSERT INTO produto (nome_produto, valor_produto, categoria_produto, adicionado_por, id_admin)
+        VALUES (?, ?, ?, ?, ?)
+    """
+
+
 def validar_cadastro(u):
     query = f"""
         SELECT username FROM login 

@@ -66,13 +66,15 @@ def pagina_login():
     
 
 def pagina_admin(l, s):
+    dados_admin = pegar_dados(l, s)
     while True:
         header1('PÁGINA ADMIN')
-        opc = input('O que você deseja fazer?\n[1] - Gerenciar produtos\n[2] - Ver pessoas cadastradas\n\n[3] - Sair\n\n-> ')
+        opc = input('O que você deseja fazer?\n\n[1] - Gerenciar produtos\n[2] - Ver pessoas cadastradas\n\n[3] - Sair\n\n-> ')
 
         match opc:
             case '1':
-                pass
+                clear()
+                gerenciamento_produto(l, s)
             case '2':
                 pessoas_cadastradas()
             case '3':
@@ -83,7 +85,63 @@ def pagina_admin(l, s):
                 sleep(1)
                 clear()
                 continue
+
+
+def gerenciamento_produto(l, s):
+    dados_admin = pegar_dados(l, s)
+    while True:
+        header1('GERENCIAMENTO DE PRODUTOS')
+        opc = input('O que você deseja fazer?\n\n[1] - Adicionar produto\n[2] - Remover produto\n[3] - Ver produtos cadastrados\n\n[4] - Sair\n\n-> ')
+
+        match opc:
+            case '1':
+                clear()
+                cadastro_produto(l, s)
+            case '2':
+                remover_produto(l, s)
+            case '3':
+                produtos_cadastrados(l, s)
+            case '4':
+                end_points('Saindo')
+                return pagina_admin(l, s)
                 
+
+def cadastro_produto(l, s):
+    dados_admin = pegar_dados(l, s)
+    adicionado_por = ''
+    while True:
+        header1('CADASTRO PRODUTO')
+        print('\n[1] - Voltar\n')
+        nome_produto = input('Nome do Produto: ').strip().title()
+        
+        
+        
+        valor_produto= float(input(f'Valor do(a) {nome_produto}: R$'))
+        
+        
+        categoria_produto = input('Categoria do produto: ').strip().title()
+        
+        break    
+        
+    for i in dados_admin[1]:
+        adicionado_por += i + ' '
+
+    id_admin = dados_admin[1]
+    
+    insert_produto(nome_produto, valor_produto, categoria_produto, adicionado_por, id_admin)
+    
+    print(f'{nome_produto} cadastrado com sucesso!')
+    end_points('Voltando ao menu de gerenciamento de produtos')
+    return gerenciamento_produto(l, s)
+
+def remover_produto(l, s):
+    pass
+
+
+def produtos_cadastrados(l, s):
+    pass
+
+
 def pagina_cliente(l, s):
     while True:
         header1('PÁGINA CLIENTE')
@@ -143,7 +201,7 @@ def sair():
 
 def cadastro_pessoa():
     while True:
-        nome_pessoa = input('Nome: ')
+        nome_pessoa = input('Nome: ').strip().title()
         if len(nome_pessoa) == 0:
             print('Informe seu nome corretamente!!!')
             continue
@@ -160,7 +218,7 @@ def cadastro_pessoa():
             continue
 
     while True:
-        email_pessoa = input('Email: ')
+        email_pessoa = input('Email: ').strip()
         if '@' and '.' not in email_pessoa:
             print('Informe um email corretamente!!! Ex: exemplo@exemplo.com')
             continue
