@@ -355,28 +355,69 @@ def loja(l, s):
             
         print(tabulate(total_compra, headers=["TOTAL"], tablefmt="fancy_grid"))
         
-        opc = input(f'\n[0] - Voltar\n[C] - Ver Carrinho\n[O] - Ordenar\n[F] - Finalizar compra\n\nInforme o identificador do produto para comprar.\n\n-> ').upper()
+        opc = input(f'\n\n[0] - Voltar\n\n[1] - Escolher Produto\n[2] - Ver Carrinho\n[3] - Ordenar\n\n[4] - Finalizar compra\n\n-> ').upper()
         
         match opc:
             case '0':
                 end_points('Voltando')
                 clear()
                 break
-            case 'C':
+            case '1':
+                opc2 = input('\nInforme o identificador(ID) do produto que deseja comprar:\n\n-> ')
+            case '2':
                 header2('CARRINHO')
-                pass
-            case 'O':
+                sleep(2)
+            case '3':
                 query_itens = """
                     SELECT DISTINCT categoria_produto FROM produto
                 """
                 with conn:
                     cursor.execute(query_itens)
                     categorias = cursor.fetchall()
-                    for i in categorias:
-                        print(i)
-                
-                opc2 = input(f'\n[0] - Voltar\n\nLista de itens para ordenar:\n{tabulate(categorias, )}')
-        
+                    
+                while True:
+                    header2('ORDENAR')
+                    opc3 = input('\n[0] - Voltar\n[1] - Ordenação Padrão\n[2] - Ordenar por categoria\n\n-> ').title()
+                    
+                    match opc3:
+                        case '0':
+                            end_points('Voltando')
+                            break    
+                        case '1':
+                            query_produtos = """
+                                SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
+                                """
+                            with conn:
+                                cursor.execute(query_produtos)
+                                produtos = cursor.fetchall()
+                            clear()
+                            break
+                        case '2':
+                                while True:
+                                    print(tabulate(categorias, headers=["LISTA DE ITENS PARA ORDENAR"], tablefmt="fancy_grid"))
+                                    opc4 = input('Informe um dos itens da lista para ordenar\n\n-> ')
+                                    query_ordenar_itens = f"""
+                                        SELECT id_produto, nome_produto, valor_produto, categoria_produto 
+                                        FROM produto
+                                        WHERE categoria_produto = '{opc3}';
+                                    """
+                                    with conn:
+                                        cursor.execute(query_ordenar_itens)
+                                        produtos = cursor.fetchall()
+                                    
+                                    clear()
+                                    break
+            case '4':
+                pass
+            case _:
+                print('Inválido! Informe corretamente!!!')
+                sleep(1)
+                clear()
+                continue
+
+
+    
+
 
 def validar_cadastro(u):
     query = f"""
