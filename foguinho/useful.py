@@ -1,7 +1,7 @@
 from time import sleep
 import os
 import stdiomask
-
+from tabulate import tabulate
     
 def header1(msg):
     print('=' * 50)
@@ -42,5 +42,4 @@ def mask_password():
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-
+    

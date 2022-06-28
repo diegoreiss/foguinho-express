@@ -7,6 +7,7 @@ from database import *
 clear()
 conexao()
 
+
 def main():
     while True:
         header1('FOGUINHO EXPRESS')
@@ -139,13 +140,15 @@ def cadastro_produto(l, s):
 
 
 def pagina_cliente(l, s):
+    dados_cliente = pegar_dados(l, s)
     while True:
         header1('PÁGINA CLIENTE')
-        opc = input('O que você deseja fazer?\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n\n-> ')
+        opc = input('O que você deseja fazer?\n\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n\n-> ')
         
         match opc:
             case '1':
-                pass
+                clear()
+                loja(l, s)
             case '2':
                 pass
             case '3':
@@ -158,8 +161,8 @@ def pagina_cliente(l, s):
                 sleep(1)
                 clear()
                 continue
-
     
+
 def pagina_cadastro():
     header2('CADASTRO')
     opc = input('Qual cadastro deseja realizar?\n[1] - Admin        [3] - Sair\n[2] - Cliente\n-> ')

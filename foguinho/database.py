@@ -1,4 +1,3 @@
-from multiprocessing import connection
 import sqlite3
 from sqlite3 import Error
 from tabulate import tabulate
@@ -14,9 +13,6 @@ def conexao():
         print(ex)
 
 
-conexao()
-
-
 def insert_pessoa(n, d, e):
     dados_pessoa = [n, d, e]
     query = """
@@ -29,7 +25,6 @@ def insert_pessoa(n, d, e):
         except Error as ex:
             print(ex)
         
-
 
 def insert_admin(m, d):
     query = """
@@ -179,7 +174,7 @@ def pessoas_cadastradas():
         dados = cursor.fetchall()
         
     header1('PESSOAS CADASTRADAS')
-    print(tabulate(dados, tablefmt="fancy_grid"))
+    print(tabulate(dados, headers=["ID", "NOME", "PERFIL"], tablefmt="fancy_grid"))
     
     while True:
         opc = input('[1] - Visualização mais detalhada\n[2] - Apenas Administradores\n[3] - Apenas Clientes\n\n[4] - Sair\n\n-> ')
@@ -202,7 +197,7 @@ def pessoas_cadastradas():
                     dados2 = cursor.fetchall()
                     
                 header1('PESSOAS CADASTRADAS')
-                print(tabulate(dados2, tablefmt="fancy_grid"))
+                print(tabulate(dados2, headers=["ID", "NOME", "DT NASCIMENTO", "LOGIN", "SENHA", "PERFIL", "MATRÍCULA", "DESDE"],tablefmt="fancy_grid"))
                 
             case '2':
                 clear()
@@ -215,7 +210,7 @@ def pessoas_cadastradas():
                     cursor.execute(query3)
                     dados3 = cursor.fetchall() 
                 header1('APENAS ADMINISTRADORES')
-                print(tabulate(dados3, tablefmt="fancy_grid"))
+                print(tabulate(dados3, headers=["ID", "NOME", "LOGIN", "SENHA", "PERFIL", "MATRÍCULA", "DESDE"],tablefmt="fancy_grid"))
                 
             case '3':
                 clear()
@@ -229,7 +224,7 @@ def pessoas_cadastradas():
                     dados4 = cursor.fetchall()
                 
                 header1('APENAS CLIENTES')
-                print(tabulate(dados4, tablefmt="fancy_grid"))
+                print(tabulate(dados4, headers=["ID", "NOME", "LOGIN", "SENHA", "PERFIL", "MATRÍCULA", "DESDE"],tablefmt="fancy_grid"))
             
             case '4':
                 end_points('Saindo')
@@ -248,6 +243,7 @@ def insert_produto(n, v, c, a, id_admin):
         except Error as ex:
             print(ex)
         
+        
 def remover_produto(l, s):
     query_produtos = """
         SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
@@ -265,7 +261,7 @@ def remover_produto(l, s):
         
     while True:
         header1('REMOVER PRODUTOS')
-        print(tabulate(produtos, tablefmt="fancy_grid"))
+        print(tabulate(produtos, headers=["ID", "NOME PRODUTO", "PREÇO", "CATEGORIA"],tablefmt="fancy_grid"))
         try:
             opc = int(input('\n[0] - Voltar\nInforme o identificador do produto(ID) que deseja remover\n\n-> '))
         except ValueError:
@@ -330,7 +326,7 @@ def produtos_cadastrados(l, s):
         try:
             cursor.execute(query)
             dados = cursor.fetchall()
-            print(tabulate(dados, tablefmt="fancy_grid"))
+            print(tabulate(dados, headers=["ID", "NOME PRODUTO", "PREÇO", "CATEGORIA", "ADICIONADO POR", "ID ADMIN"], tablefmt="fancy_grid"))
         except Error as ex:
             print(ex)
 
@@ -342,7 +338,45 @@ def produtos_cadastrados(l, s):
                 clear()
                 break
     
+
+def loja(l, s):
+    carrinho_cliente = []
+    total_compra = [['R$0,00']]
+    query_produtos = """
+        SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
+    """
+    with conn:
+        cursor.execute(query_produtos)
+        produtos = cursor.fetchall()
     
+    while True:
+        header1('PRODUTOS')
+        print(tabulate(produtos, headers=["ID", "NOME PRODUTO", "PREÇO", "CATEGORIA"], tablefmt="psql"))
+            
+        print(tabulate(total_compra, headers=["TOTAL"], tablefmt="fancy_grid"))
+        
+        opc = input(f'\n[0] - Voltar\n[C] - Ver Carrinho\n[O] - Ordenar\n[F] - Finalizar compra\n\nInforme o identificador do produto para comprar.\n\n-> ').upper()
+        
+        match opc:
+            case '0':
+                end_points('Voltando')
+                clear()
+                break
+            case 'C':
+                header2('CARRINHO')
+                pass
+            case 'O':
+                query_itens = """
+                    SELECT DISTINCT categoria_produto FROM produto
+                """
+                with conn:
+                    cursor.execute(query_itens)
+                    categorias = cursor.fetchall()
+                    for i in categorias:
+                        print(i)
+                
+                opc2 = input(f'\n[0] - Voltar\n\nLista de itens para ordenar:\n{tabulate(categorias, )}')
+        
 
 def validar_cadastro(u):
     query = f"""
