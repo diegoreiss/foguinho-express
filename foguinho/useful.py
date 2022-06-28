@@ -29,6 +29,12 @@ def format_date(d):
     return date
 
 
+def format_float(f):
+    frmt = round(float(f.replace(',', '.')), 2)
+    aux = f'R${frmt:.2f}'
+    return aux.replace('.', ',')
+    
+
 def mask_password():
     senha = stdiomask.getpass(prompt='Senha: ', mask='*')
     return senha
@@ -36,4 +42,5 @@ def mask_password():
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-    
+
+

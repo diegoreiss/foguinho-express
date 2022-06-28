@@ -1,3 +1,4 @@
+from multiprocessing import connection
 import sqlite3
 from sqlite3 import Error
 from tabulate import tabulate
@@ -131,27 +132,33 @@ def validar_login(u, s):
 
 def pegar_dados(u, s):
     query = f"""
-        SELECT P.id_pessoa, P.nome_pessoa, L.username, L.senha, L.perfil
+        SELECT P.id_pessoa, A.id_admin, P.nome_pessoa, L.username, L.senha, L.perfil
         FROM pessoa P, login L, admin A
         WHERE (P.id_pessoa = A.id_pessoa AND A.id_admin = L.id_admin) AND (L.username = '{u}' AND L.senha = '{s}')
         UNION
-        SELECT P.id_pessoa, P.nome_pessoa, L.username, L.senha, L.perfil
+        SELECT P.id_pessoa, C.id_cliente, P.nome_pessoa, L.username, L.senha, L.perfil
         FROM pessoa P, login L, cliente C
         WHERE (P.id_pessoa = C.id_pessoa AND C.id_cliente = L.id_cliente) AND (L.username = '{u}' AND L.senha = '{s}')
     """
     with conn:
         cursor.execute(query)
         dados = cursor.fetchone()
-        id_pessoa = dados[0]
-        nome = dados[1].split()
-        perfil = dados[4]
-        lista_dados = [id_pessoa, nome, perfil]
         
-    return lista_dados
-
-
-def pegar_dados_cliente(u, s):
-    pass
+        match dados[5]:
+            case 'Administrador':
+                id_admin = dados[1]
+                nome = dados[2]
+                primeiro_nome = dados[2].split()
+                perfil = dados[5]
+                lista_dados_admin = [id_admin, nome, primeiro_nome[0], perfil]
+                return lista_dados_admin
+            case 'Cliente':
+                id_cliente = dados[1]
+                nome = dados[2]
+                primeiro_nome = dados[2].split()
+                perfil = dados[5]
+                lista_dados_cliente = [id_cliente, nome, primeiro_nome[0], perfil]
+                return lista_dados_cliente
 
 
 def pessoas_cadastradas():
@@ -171,6 +178,7 @@ def pessoas_cadastradas():
         dados = cursor.fetchall()
         
     header1('PESSOAS CADASTRADAS')
+    print(f'{"ID":>3}{"NOME":>6}{"PERFIL":>26}')
     print(tabulate(dados, tablefmt="fancy_grid"))
     
     while True:
@@ -181,11 +189,11 @@ def pessoas_cadastradas():
             case '1':
                 clear()
                 query2 = """
-                    SELECT P.id_pessoa, P.nome_pessoa, L.username, L.senha, L.perfil, A.matricula, A.desde
+                    SELECT P.id_pessoa, P.nome_pessoa, P.dt_nasc_pessoa, L.username, L.senha, L.perfil, A.matricula, A.desde
                     FROM pessoa P, login L, admin A
                     WHERE P.id_pessoa = A.id_pessoa AND L.id_admin = A.id_admin
                     UNION
-                    SELECT P.id_pessoa, P.nome_pessoa, L.username, L.senha, L.perfil, C.matricula, C.desde
+                    SELECT P.id_pessoa, P.nome_pessoa, P.dt_nasc_pessoa, L.username, L.senha, L.perfil, C.matricula, C.desde
                     FROM pessoa P, login L, cliente C
                     WHERE P.id_pessoa = C.id_pessoa AND L.id_cliente = C.id_cliente;
                 """
@@ -193,7 +201,8 @@ def pessoas_cadastradas():
                     cursor.execute(query2)
                     dados2 = cursor.fetchall()
                     
-                header1('PESSOAS CADASTRADAS')    
+                header1('PESSOAS CADASTRADAS')
+                print(f'{"ID":>3}{"NOME":>6}{"PERFIL":>53}')
                 print(tabulate(dados2, tablefmt="fancy_grid"))
                 
             case '2':
@@ -229,11 +238,46 @@ def pessoas_cadastradas():
         
 
 def insert_produto(n, v, c, a, id):
+    valores = [n, v, c, a, id]
     query = """
         INSERT INTO produto (nome_produto, valor_produto, categoria_produto, adicionado_por, id_admin)
         VALUES (?, ?, ?, ?, ?)
     """
+    with conn:
+        try:
+            cursor.execute(query, valores)
+        except Error as ex:
+            print(ex)
+        
+def remover_produto(l, s):
+    query = """
+        DELETE FROM produto 
+        WHERE 
+    """
+    pass
 
+
+def produtos_cadastrados(l, s):
+    query = """
+        SELECT * FROM produto
+    """
+    with conn:
+        try:
+            cursor.execute(query)
+            dados = cursor.fetchall()
+            print(tabulate(dados, tablefmt="fancy_grid"))
+        except Error as ex:
+            print(ex)
+
+    while True:
+        opc = input('\n[1] - Voltar\n\n-> ')
+        
+        match opc:
+            case '1':
+                clear()
+                break
+    
+    
 
 def validar_cadastro(u):
     query = f"""
@@ -248,3 +292,5 @@ def validar_cadastro(u):
         return True
     else:
         return False        
+
+

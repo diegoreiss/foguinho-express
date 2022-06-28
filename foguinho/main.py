@@ -48,7 +48,7 @@ def pagina_login():
             dados = pegar_dados(login, senha)
             print('Login efetuado com sucesso!!!')
             sleep(1)
-            print(f'Bem vindo {dados[1][0]}!!!')
+            print(f'Bem vindo {dados[2]}!!!')
             sleep(1)
             clear()
             break
@@ -58,7 +58,7 @@ def pagina_login():
             clear()
             continue
     
-    match dados[2]:
+    match dados[3]:
         case 'Administrador':
             pagina_admin(login, senha)
         case 'Cliente':
@@ -104,42 +104,34 @@ def gerenciamento_produto(l, s):
             case '4':
                 end_points('Saindo')
                 return pagina_admin(l, s)
+            case _:
+                print('Inválido! Informe corretamente!')
+                sleep(1)
+                clear()
                 
 
 def cadastro_produto(l, s):
     dados_admin = pegar_dados(l, s)
-    adicionado_por = ''
     while True:
         header1('CADASTRO PRODUTO')
         print('\n[1] - Voltar\n')
         nome_produto = input('Nome do Produto: ').strip().title()
         
-        
-        
-        valor_produto= float(input(f'Valor do(a) {nome_produto}: R$'))
-        
+        valor_produto= input(f'Valor do(a) {nome_produto}: R$')
         
         categoria_produto = input('Categoria do produto: ').strip().title()
         
         break    
         
-    for i in dados_admin[1]:
-        adicionado_por += i + ' '
-
-    id_admin = dados_admin[1]
+    adicionado_por = dados_admin[1]
+    
+    id_admin = dados_admin[0]
     
     insert_produto(nome_produto, valor_produto, categoria_produto, adicionado_por, id_admin)
     
     print(f'{nome_produto} cadastrado com sucesso!')
     end_points('Voltando ao menu de gerenciamento de produtos')
     return gerenciamento_produto(l, s)
-
-def remover_produto(l, s):
-    pass
-
-
-def produtos_cadastrados(l, s):
-    pass
 
 
 def pagina_cliente(l, s):
@@ -225,7 +217,7 @@ def cadastro_pessoa():
         else:
             break
     
-    insert_pessoa(nome_pessoa, dt_nasc_pessoa, email_pessoa)
+    insert_pessoa(nome_pessoa, data_formatada, email_pessoa)
     
 
 def cadastro_admin():
