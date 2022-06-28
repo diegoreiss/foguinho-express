@@ -179,7 +179,6 @@ def pessoas_cadastradas():
         dados = cursor.fetchall()
         
     header1('PESSOAS CADASTRADAS')
-    print(f'{"ID":>3}{"NOME":>6}{"PERFIL":>26}')
     print(tabulate(dados, tablefmt="fancy_grid"))
     
     while True:
@@ -203,7 +202,6 @@ def pessoas_cadastradas():
                     dados2 = cursor.fetchall()
                     
                 header1('PESSOAS CADASTRADAS')
-                print(f'{"ID":>3}{"NOME":>6}{"PERFIL":>53}')
                 print(tabulate(dados2, tablefmt="fancy_grid"))
                 
             case '2':

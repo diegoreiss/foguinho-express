@@ -117,6 +117,9 @@ def cadastro_produto(l, s):
         header1('CADASTRO PRODUTO')
         print('\n[1] - Voltar\n')
         nome_produto = input('Nome do Produto: ').strip().title()
+        if nome_produto == '1':
+            end_points('Voltando')
+            return gerenciamento_produto(l, s) 
         
         valor_produto= input(f'Valor do(a) {nome_produto}: R$')
         
@@ -138,7 +141,7 @@ def cadastro_produto(l, s):
 def pagina_cliente(l, s):
     while True:
         header1('PÁGINA CLIENTE')
-        opc = input('O que você deseja fazer?\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n-> ')
+        opc = input('O que você deseja fazer?\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n\n-> ')
         
         match opc:
             case '1':
