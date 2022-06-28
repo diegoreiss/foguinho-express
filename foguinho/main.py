@@ -98,6 +98,7 @@ def gerenciamento_produto(l, s):
                 clear()
                 cadastro_produto(l, s)
             case '2':
+                clear()
                 remover_produto(l, s)
             case '3':
                 produtos_cadastrados(l, s)
@@ -269,10 +270,6 @@ def cadastro_cliente():
     insert_cliente_login(login_cliente, senha_cliente, perfil)
     end_points('Voltando ao menu principal')
     return main()
-    
-
-
-
 
 
 main()

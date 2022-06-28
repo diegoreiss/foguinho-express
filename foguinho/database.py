@@ -4,6 +4,7 @@ from sqlite3 import Error
 from tabulate import tabulate
 from useful import *
 
+
 def conexao():
     global conn, cursor
     try:
@@ -182,7 +183,7 @@ def pessoas_cadastradas():
     print(tabulate(dados, tablefmt="fancy_grid"))
     
     while True:
-        opc = input('[1] - Visualização mais detalhada\n[2] - Apenas Administradores\n[3] - Apenas Clientes\n\n[4] - Sair\n-> ')
+        opc = input('[1] - Visualização mais detalhada\n[2] - Apenas Administradores\n[3] - Apenas Clientes\n\n[4] - Sair\n\n-> ')
         
         match opc:
             
@@ -237,8 +238,8 @@ def pessoas_cadastradas():
                 break
         
 
-def insert_produto(n, v, c, a, id):
-    valores = [n, v, c, a, id]
+def insert_produto(n, v, c, a, id_admin):
+    valores = [n, v, c, a, id_admin]
     query = """
         INSERT INTO produto (nome_produto, valor_produto, categoria_produto, adicionado_por, id_admin)
         VALUES (?, ?, ?, ?, ?)
@@ -250,11 +251,77 @@ def insert_produto(n, v, c, a, id):
             print(ex)
         
 def remover_produto(l, s):
-    query = """
-        DELETE FROM produto 
-        WHERE 
+    query_produtos = """
+        SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
     """
-    pass
+    with conn:
+        cursor.execute(query_produtos)
+        produtos = cursor.fetchall()
+    
+    query_quant_produtos = """
+        SELECT MAX(id_produto) FROM produto
+    """
+    with conn:
+        cursor.execute(query_quant_produtos)
+        quant = cursor.fetchone()[0]
+        
+    while True:
+        header1('REMOVER PRODUTOS')
+        print(tabulate(produtos, tablefmt="fancy_grid"))
+        try:
+            opc = int(input('\n[0] - Voltar\nInforme o identificador do produto(ID) que deseja remover\n\n-> '))
+        except ValueError:
+            print('Inválido! Informe corretamente')
+            sleep(1)
+            clear()
+            continue
+        if opc == 0:
+            end_points('Voltando')
+            break
+        elif opc > quant:
+            print(f'Não existe produto com o id {opc}, informe novamente.')
+            sleep(2)
+            clear()
+            continue
+        else:
+            while True:
+                query_escolher_produto = f"""
+                    SELECT nome_produto FROM produto WHERE id_produto = {opc}
+                """
+                with conn:
+                    cursor.execute(query_escolher_produto)
+                    try:
+                        produto_escolhido = cursor.fetchone()[0]
+                    except TypeError:
+                        print('Esse id foi removido. Informe novamente.')
+                        sleep(1)
+                        clear()
+                        break
+                    
+                dec = input(f'Tem certeza que quer remover o produto {produto_escolhido}? [S/N]: ').strip().upper()[0]
+                match dec:
+                    case 'S':
+                        query_deletar_produto = f"""
+                            DELETE FROM produto 
+                            WHERE id_produto = {opc}
+                        """
+                        with conn:
+                            cursor.execute(query_deletar_produto)
+                            sleep(1)
+                            print(f'O produto {produto_escolhido} removido ;(')
+                            sleep(1)
+                            cursor.execute(query_produtos)
+                            produtos = cursor.fetchall()
+                            clear()
+                            break
+                    case 'N':
+                        clear()
+                        break
+                    case _:
+                        print('Inválido! Informe corretamente!!')
+                        continue
+    
+    
 
 
 def produtos_cadastrados(l, s):
