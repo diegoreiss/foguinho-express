@@ -30,9 +30,9 @@ def format_date(d):
 
 
 def format_float(f):
-    frmt = round(float(f.replace(',', '.')), 2)
-    aux = f'R${frmt:.2f}'
-    return aux.replace('.', ',')
+    float_num = f
+    format_num = f'R${float_num:.2f}'
+    return format_num.replace('.', ',')
     
 
 def mask_password():

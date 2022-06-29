@@ -11,6 +11,55 @@ def conexao():
         cursor = conn.cursor()
     except Error as ex:
         print(ex)
+        
+
+def tabelas():
+    create_tables = """
+        CREATE TABLE IF NOT EXISTS pessoa(
+            id_pessoa INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome_pessoa VARCHAR(60),
+            dt_nasc_pessoa DATE(10),
+            email_pessoa VARCHAR(60)
+        );
+        
+        CREATE TABLE IF NOT EXISTS cliente(
+            id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+            matricula VARCHAR(6),
+            desde DATE(10),
+            id_pessoa INTEGER REFERENCES pessoa(id_pessoa)
+        );
+        
+        CREATE TABLE IF NOT EXISTS admin(
+            id_admin INTEGER PRIMARY KEY AUTOINCREMENT,
+            matricula VARCHAR(6),
+            desde DATE(10),
+            id_pessoa INTEGER REFERENCES pessoa(id_pessoa)
+        );
+        
+        CREATE TABLE IF NOT EXISTS login(
+            id_login INTEGER PRIMARY KEY AUTOINCREMENT,
+            username VARCHAR(60),
+            senha VARCHAR(60),
+            perfil VARCHAR(20),
+            id_admin INTEGER REFERENCES admin(id_admin),
+            id_cliente INTEGER REFERENCES cliente(id_cliente)
+        );
+        
+        CREATE TABLE IF NOT EXISTS produto(
+            id_produto INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome_produto VARCHAR(60),
+            valor_produto VARCHAR(6),
+            categoria_produto VARCHAR(60),
+            adicionado_por VARCHAR(60),
+            id_admin INTEGER REFERENCES admin(id_admin)  
+        );
+    """
+    with conn:
+        try:
+            cursor.executescript(create_tables)
+            print('tabelas criadas')
+        except Error as ex:
+            print(ex)
 
 
 def insert_pessoa(n, d, e):
@@ -340,7 +389,10 @@ def produtos_cadastrados(l, s):
     
 
 def loja(l, s):
+    dados_cliente = pegar_dados(l, s)
     carrinho_cliente = []
+    total = 0
+    soma = 0
     total_compra = [['R$0,00']]
     query_produtos = """
         SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
@@ -363,10 +415,40 @@ def loja(l, s):
                 clear()
                 break
             case '1':
-                opc2 = input('\nInforme o identificador(ID) do produto que deseja comprar:\n\n-> ')
+                while True:
+                    try:
+                        opc2 = int(input('\nInforme o identificador(ID) do produto que deseja comprar:\n\n-> '))
+                        query_produto_escolhido = f"""
+                            SELECT id_produto, nome_produto, valor_produto FROM produto WHERE id_produto = {opc2}
+                        """
+                        with conn:
+                            cursor.execute(query_produto_escolhido)
+                            produto_escolhido = cursor.fetchone()
+                            
+                        quantidade = int(input(f'Informe a quantidade de {produto_escolhido[1]} que deseja comprar\n\n-> '))
+                        
+                        total = float(produto_escolhido[2].replace(',', '.')) * quantidade
+                        soma += total
+                        total_compra = [[f'{format_float(soma)}']]
+                        carrinho_cliente.append([dados_cliente[0], produto_escolhido[0], produto_escolhido[1], produto_escolhido[2], quantidade])
+                        print(f'{quantidade} {produto_escolhido[1]} comprado!')
+                        end_points('Voltando')
+                        clear()
+                        break
+                        
+                    except TypeError:
+                        print(f'O produto com o id {opc2} não existe. Informe novamente.')
+                        sleep(1)
+                        continue
+              
             case '2':
                 header2('CARRINHO')
-                sleep(2)
+                print(tabulate(carrinho_cliente, headers=["ID CLIENTE", "ID PRODUTO", "NOME", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
+                opc_carrinho = input('\n[0] - Voltar\n\n-> ')
+                match opc_carrinho:
+                    case '0':
+                        end_points('Voltando')
+                        clear()
             case '3':
                 query_itens = """
                     SELECT DISTINCT categoria_produto FROM produto
@@ -395,11 +477,11 @@ def loja(l, s):
                         case '2':
                                 while True:
                                     print(tabulate(categorias, headers=["LISTA DE ITENS PARA ORDENAR"], tablefmt="fancy_grid"))
-                                    opc4 = input('Informe um dos itens da lista para ordenar\n\n-> ')
+                                    opc4 = input('Informe um dos itens da lista para ordenar\n\n-> ').title()
                                     query_ordenar_itens = f"""
                                         SELECT id_produto, nome_produto, valor_produto, categoria_produto 
                                         FROM produto
-                                        WHERE categoria_produto = '{opc3}';
+                                        WHERE categoria_produto = '{opc4}';
                                     """
                                     with conn:
                                         cursor.execute(query_ordenar_itens)
@@ -407,6 +489,7 @@ def loja(l, s):
                                     
                                     clear()
                                     break
+                    break
             case '4':
                 pass
             case _:
