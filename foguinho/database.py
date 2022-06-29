@@ -475,20 +475,28 @@ def loja(l, s):
                         while True:
                             try:
                                 opc_remover = int(input('Informe o ID do pedido para remover ele do seu carrinho\n\n-> '))
-                                remover_produto_carrinho(opc_remover)
                                 break
                             except:
                                 print('O id informado não existe. informe novamente!')
                                 continue
-                        
-                        
-                        
-                        total_sub = float(carrinho[2].replace(',', '.')) * carrinho[3]
-                        print()
+
+                        mostrar_produto = f"""
+                            SELECT nome_produto, preco_produto, quantidade FROM carrinho WHERE id_pedido = {opc_remover}
+                        """
+                        with conn:
+                            cursor.execute(mostrar_produto)
+                            dados_produto = cursor.fetchone()
+
+                        total_sub = float(dados_produto[1].replace(',', '.')) * dados_produto[2]
                         soma -= total_sub
                         total_compra = [[f'{format_float(soma)}']]
-                        print(f'Produto {carrinho_cliente[opc_remover][2]} removido!!')
-                        carrinho_cliente.pop(opc_remover)
+                        query_remover_produto_carrinho = f"""
+                            DELETE FROM carrinho WHERE id_pedido = {opc_remover}
+                        """
+                        with conn:
+                            cursor.execute(query_remover_produto_carrinho)
+
+                        print(f'\nProduto {nome_produto} removido!!\n')
                         sleep(1)
                         end_points('Voltando')
                         clear()
@@ -576,7 +584,6 @@ def reset_carrinho():
     """
     with conn:
         cursor.execute(query_reset)
-
 
 
 
