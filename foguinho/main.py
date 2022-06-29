@@ -7,6 +7,7 @@ from database import *
 clear()
 conexao()
 tabelas()
+reset_carrinho()
 
 def main():
     while True:

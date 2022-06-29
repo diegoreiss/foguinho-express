@@ -60,6 +60,13 @@ def tabelas():
             quantidade INTEGER(6),
             dt_compra DATE(10)
         );
+        
+        CREATE TABLE IF NOT EXISTS carrinho(
+              id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
+              nome_produto VARCHAR(60),
+              preco_produto VARCHAR(60),
+              quantidade INTEGER(6)
+        );
     """
     with conn:
         try:
@@ -421,6 +428,7 @@ def loja(l, s):
         match opc:
             case '0':
                 end_points('Voltando')
+                reset_carrinho()
                 clear()
                 break
             case '1':
@@ -443,7 +451,7 @@ def loja(l, s):
                         id_produto = produto_escolhido[0]
                         nome_produto = produto_escolhido[1]
                         valor_produto = produto_escolhido[2]
-                        carrinho_cliente.append([id_pedido, id_produto, nome_produto, valor_produto, quantidade])
+                        insert_carrinho(nome_produto, valor_produto, quantidade)
                         id_pedido += 1
                         print(f'{quantidade} {produto_escolhido[1]} comprado!')
                         end_points('Voltando')
@@ -457,7 +465,7 @@ def loja(l, s):
               
             case '2':
                 header2('CARRINHO')
-                print(tabulate(carrinho_cliente, headers=["ID PEDIDO", "ID PRODUTO", "NOME PRODUTO", "VALOR PRODUTO", "QUANTIDADE"], tablefmt="fancy_grid"))
+                carrinho = mostrar_carrinho()
                 opc_carrinho = input('\n[0] - Voltar\n\n[1] - Remover itens\n\n-> ')
                 match opc_carrinho:
                     case '0':
@@ -465,15 +473,18 @@ def loja(l, s):
                         clear()
                     case '1':
                         while True:
-                            opc_remover = int(input('Informe o ID do pedido para remover ele do seu carrinho\n\n-> ')) - 1
-                            
-                            if opc_remover > len(carrinho_cliente):
-                                print('Isso não consta no seu carrinho. Informe novamente.')
-                                continue
-                            else:
+                            try:
+                                opc_remover = int(input('Informe o ID do pedido para remover ele do seu carrinho\n\n-> '))
+                                remover_produto_carrinho(opc_remover)
                                 break
+                            except:
+                                print('O id informado não existe. informe novamente!')
+                                continue
                         
-                        total_sub = float(carrinho_cliente[opc_remover][3].replace(',', '.')) * carrinho_cliente[opc_remover][4]
+                        
+                        
+                        total_sub = float(carrinho[2].replace(',', '.')) * carrinho[3]
+                        print()
                         soma -= total_sub
                         total_compra = [[f'{format_float(soma)}']]
                         print(f'Produto {carrinho_cliente[opc_remover][2]} removido!!')
@@ -535,6 +546,36 @@ def loja(l, s):
                 clear()
                 continue
 
+
+def insert_carrinho(nome, valor, quant):
+    valores = [nome, valor, quant]
+    query_insert_carrinho = """
+        INSERT INTO carrinho (nome_produto, preco_produto, quantidade)
+        VALUES (?, ?, ?)
+    """
+    with conn:
+        cursor.execute(query_insert_carrinho, valores)
+        
+
+
+def mostrar_carrinho():
+    query_mostrar_carrinho = """
+        SELECT * FROM carrinho
+    """
+    with conn:
+        cursor.execute(query_mostrar_carrinho)
+        carrinho = cursor.fetchall()
+    
+    print(tabulate(carrinho, headers=["ID PEDIDO", "NOME PRODUTO", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
+    
+    return carrinho
+
+def reset_carrinho():
+    query_reset = """
+        DELETE FROM carrinho
+    """
+    with conn:
+        cursor.execute(query_reset)
 
 
 
