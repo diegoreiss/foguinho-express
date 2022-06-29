@@ -7,7 +7,6 @@ from database import *
 clear()
 conexao()
 tabelas()
-sleep(1)
 
 def main():
     while True:

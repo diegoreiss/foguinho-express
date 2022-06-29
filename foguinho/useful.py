@@ -42,4 +42,3 @@ def mask_password():
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-    

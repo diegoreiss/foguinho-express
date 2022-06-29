@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 from tabulate import tabulate
 from useful import *
-
+from datetime import datetime
 
 def conexao():
     global conn, cursor
@@ -53,11 +53,17 @@ def tabelas():
             adicionado_por VARCHAR(60),
             id_admin INTEGER REFERENCES admin(id_admin)  
         );
+        
+        CREATE TABLE IF NOT EXISTS produtos_vendidos(
+            id_cliente INTEGER REFERENCES cliente(id_cliente),
+            id_produto INTEGER REFERENCES produto(id_prouto),
+            quantidade INTEGER(6),
+            dt_compra DATE(10)
+        );
     """
     with conn:
         try:
             cursor.executescript(create_tables)
-            print('tabelas criadas')
         except Error as ex:
             print(ex)
 
@@ -393,6 +399,9 @@ def loja(l, s):
     carrinho_cliente = []
     total = 0
     soma = 0
+    total_sub = 0
+    sub = 0
+    id_pedido = 1
     total_compra = [['R$0,00']]
     query_produtos = """
         SELECT id_produto, nome_produto, valor_produto, categoria_produto FROM produto
@@ -415,7 +424,7 @@ def loja(l, s):
                 clear()
                 break
             case '1':
-                while True:
+              while True:
                     try:
                         opc2 = int(input('\nInforme o identificador(ID) do produto que deseja comprar:\n\n-> '))
                         query_produto_escolhido = f"""
@@ -430,7 +439,12 @@ def loja(l, s):
                         total = float(produto_escolhido[2].replace(',', '.')) * quantidade
                         soma += total
                         total_compra = [[f'{format_float(soma)}']]
-                        carrinho_cliente.append([dados_cliente[0], produto_escolhido[0], produto_escolhido[1], produto_escolhido[2], quantidade])
+                        dt_compra = datetime.today().strftime('%d-%m-%Y')
+                        id_produto = produto_escolhido[0]
+                        nome_produto = produto_escolhido[1]
+                        valor_produto = produto_escolhido[2]
+                        carrinho_cliente.append([id_pedido, id_produto, nome_produto, valor_produto, quantidade])
+                        id_pedido += 1
                         print(f'{quantidade} {produto_escolhido[1]} comprado!')
                         end_points('Voltando')
                         clear()
@@ -443,12 +457,35 @@ def loja(l, s):
               
             case '2':
                 header2('CARRINHO')
-                print(tabulate(carrinho_cliente, headers=["ID CLIENTE", "ID PRODUTO", "NOME", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
-                opc_carrinho = input('\n[0] - Voltar\n\n-> ')
+                print(tabulate(carrinho_cliente, headers=["ID PEDIDO", "ID PRODUTO", "NOME PRODUTO", "VALOR PRODUTO", "QUANTIDADE"], tablefmt="fancy_grid"))
+                opc_carrinho = input('\n[0] - Voltar\n\n[1] - Remover itens\n\n-> ')
                 match opc_carrinho:
                     case '0':
                         end_points('Voltando')
                         clear()
+                    case '1':
+                        while True:
+                            opc_remover = int(input('Informe o ID do pedido para remover ele do seu carrinho\n\n-> ')) - 1
+                            
+                            if opc_remover > len(carrinho_cliente):
+                                print('Isso não consta no seu carrinho. Informe novamente.')
+                                continue
+                            else:
+                                break
+                        
+                        total_sub = float(carrinho_cliente[opc_remover][3].replace(',', '.')) * carrinho_cliente[opc_remover][4]
+                        soma -= total_sub
+                        total_compra = [[f'{format_float(soma)}']]
+                        print(f'Produto {carrinho_cliente[opc_remover][2]} removido!!')
+                        carrinho_cliente.pop(opc_remover)
+                        sleep(1)
+                        end_points('Voltando')
+                        clear()
+                            
+                            
+                        
+                        
+                        
             case '3':
                 query_itens = """
                     SELECT DISTINCT categoria_produto FROM produto
@@ -499,7 +536,7 @@ def loja(l, s):
                 continue
 
 
-    
+
 
 
 def validar_cadastro(u):
