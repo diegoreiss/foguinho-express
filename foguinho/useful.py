@@ -1,7 +1,6 @@
 from time import sleep
 import os
-import stdiomask
-from tabulate import tabulate
+import stdiomask # (pip install stdiomask) ou (py -m pip install stdiomask)
     
 def header1(msg):
     print('=' * 50)

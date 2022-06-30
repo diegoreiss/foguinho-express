@@ -1,6 +1,6 @@
 import sqlite3
 from sqlite3 import Error
-from tabulate import tabulate
+from tabulate import tabulate # (pip install tabulate) ou (py -m pip install tabulate)
 from useful import *
 from datetime import datetime
 
