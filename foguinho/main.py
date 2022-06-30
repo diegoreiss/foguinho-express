@@ -152,7 +152,7 @@ def pagina_cliente(l, s):
             case '2':
                 pass
             case '3':
-                pass
+                dados_cliente_logado(dados_cliente[0])
             case '4':
                 end_points('Saindo')
                 return pagina_login()

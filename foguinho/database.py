@@ -63,6 +63,7 @@ def tabelas():
         
         CREATE TABLE IF NOT EXISTS carrinho(
               id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
+              id_produto INTEGER(8),
               nome_produto VARCHAR(60),
               preco_produto VARCHAR(60),
               quantidade INTEGER(6)
@@ -403,11 +404,9 @@ def produtos_cadastrados(l, s):
 
 def loja(l, s):
     dados_cliente = pegar_dados(l, s)
-    carrinho_cliente = []
     total = 0
     soma = 0
     total_sub = 0
-    sub = 0
     id_pedido = 1
     total_compra = [['R$0,00']]
     query_produtos = """
@@ -447,11 +446,10 @@ def loja(l, s):
                         total = float(produto_escolhido[2].replace(',', '.')) * quantidade
                         soma += total
                         total_compra = [[f'{format_float(soma)}']]
-                        dt_compra = datetime.today().strftime('%d-%m-%Y')
                         id_produto = produto_escolhido[0]
                         nome_produto = produto_escolhido[1]
                         valor_produto = produto_escolhido[2]
-                        insert_carrinho(nome_produto, valor_produto, quantidade)
+                        insert_carrinho(id_produto, nome_produto, valor_produto, quantidade)
                         id_pedido += 1
                         print(f'{quantidade} {produto_escolhido[1]} comprado!')
                         end_points('Voltando')
@@ -475,35 +473,33 @@ def loja(l, s):
                         while True:
                             try:
                                 opc_remover = int(input('Informe o ID do pedido para remover ele do seu carrinho\n\n-> '))
+                                
+                                mostrar_produto = f"""
+                                    SELECT nome_produto, preco_produto, quantidade FROM carrinho WHERE id_pedido = {opc_remover}
+                                """
+                                with conn:
+                                    cursor.execute(mostrar_produto)
+                                    dados_produto = cursor.fetchone()
+                                
+                                total_sub = float(dados_produto[1].replace(',', '.')) * dados_produto[2]
+                                soma -= total_sub
+                                total_compra = [[f'{format_float(soma)}']]
+                                
+                                query_remover_produto_carrinho = f"""
+                                    DELETE FROM carrinho WHERE id_pedido = {opc_remover}
+                                """
+                                with conn:
+                                    cursor.execute(query_remover_produto_carrinho)
+
+                                print(f'\nProduto {dados_produto[0]} removido!!\n')
+                                sleep(1)
+                                end_points('Voltando')
+                                clear()
+                                
                                 break
                             except:
                                 print('O id informado não existe. informe novamente!')
                                 continue
-
-                        mostrar_produto = f"""
-                            SELECT nome_produto, preco_produto, quantidade FROM carrinho WHERE id_pedido = {opc_remover}
-                        """
-                        with conn:
-                            cursor.execute(mostrar_produto)
-                            dados_produto = cursor.fetchone()
-
-                        total_sub = float(dados_produto[1].replace(',', '.')) * dados_produto[2]
-                        soma -= total_sub
-                        total_compra = [[f'{format_float(soma)}']]
-                        query_remover_produto_carrinho = f"""
-                            DELETE FROM carrinho WHERE id_pedido = {opc_remover}
-                        """
-                        with conn:
-                            cursor.execute(query_remover_produto_carrinho)
-
-                        print(f'\nProduto {nome_produto} removido!!\n')
-                        sleep(1)
-                        end_points('Voltando')
-                        clear()
-                            
-                            
-                        
-                        
                         
             case '3':
                 query_itens = """
@@ -547,7 +543,7 @@ def loja(l, s):
                                     break
                     break
             case '4':
-                pass
+                dt_compra = datetime.today().strftime('%d-%m-%Y')
             case _:
                 print('Inválido! Informe corretamente!!!')
                 sleep(1)
@@ -555,11 +551,11 @@ def loja(l, s):
                 continue
 
 
-def insert_carrinho(nome, valor, quant):
-    valores = [nome, valor, quant]
+def insert_carrinho(id_prod, nome, valor, quant):
+    valores = [id_prod, nome, valor, quant]
     query_insert_carrinho = """
-        INSERT INTO carrinho (nome_produto, preco_produto, quantidade)
-        VALUES (?, ?, ?)
+        INSERT INTO carrinho (id_produto, nome_produto, preco_produto, quantidade)
+        VALUES (?, ?, ?, ?)
     """
     with conn:
         cursor.execute(query_insert_carrinho, valores)
@@ -574,7 +570,7 @@ def mostrar_carrinho():
         cursor.execute(query_mostrar_carrinho)
         carrinho = cursor.fetchall()
     
-    print(tabulate(carrinho, headers=["ID PEDIDO", "NOME PRODUTO", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
+    print(tabulate(carrinho, headers=["ID PEDIDO", "ID PRODUTO", "NOME PRODUTO", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
     
     return carrinho
 
@@ -586,6 +582,21 @@ def reset_carrinho():
         cursor.execute(query_reset)
 
 
+
+def dados_cliente_logado(id_cli):
+    query_dados_cliente = f"""
+        SELECT P.id_pessoa, C.id_cliente, P.nome_pessoa, L.username, L.senha, L.perfil, C.desde, C.matricula
+        FROM pessoa P, cliente C, login L
+        WHERE (C.id_pessoa = P.id_pessoa AND C.id_cliente = L.id_cliente) AND C.id_cliente = {id_cli}
+    """
+    with conn:
+        cursor.execute(query_dados_cliente)
+        dado_cliente = cursor.fetchall()
+    
+    print(tabulate(dado_cliente, headers=["ID PESSOA", "ID CLIENTE", "NOME CLIENTE", "USERNAME", "SENHA", "PERFIL", "CLIENTE DESDE", "MATRICULA CLIENTE"], tablefmt="fancy_grid"))
+    sleep(10)
+    clear()
+    
 
 def validar_cadastro(u):
     query = f"""
