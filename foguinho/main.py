@@ -143,17 +143,15 @@ def pagina_cliente(l, s):
     dados_cliente = pegar_dados(l, s)
     while True:
         header1('PÁGINA CLIENTE')
-        opc = input('O que você deseja fazer?\n\n[1] - Comprar Produtos\n[2] - Meu histórico de compras\n[3] - Informações sobre minha conta\n\n[4] - Sair\n\n-> ')
+        opc = input('O que você deseja fazer?\n\n[1] - Comprar Produtos\n[2] - Informações sobre minha conta\n\n[3] - Sair\n\n-> ')
         
         match opc:
             case '1':
                 clear()
                 loja(l, s)
             case '2':
-                pass
-            case '3':
                 dados_cliente_logado(dados_cliente[0])
-            case '4':
+            case '3':
                 end_points('Saindo')
                 return pagina_login()
             case _:

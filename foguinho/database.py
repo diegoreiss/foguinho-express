@@ -54,16 +54,8 @@ def tabelas():
             id_admin INTEGER REFERENCES admin(id_admin)  
         );
         
-        CREATE TABLE IF NOT EXISTS produtos_vendidos(
-            id_cliente INTEGER REFERENCES cliente(id_cliente),
-            id_produto INTEGER REFERENCES produto(id_prouto),
-            quantidade INTEGER(6),
-            dt_compra DATE(10)
-        );
-        
         CREATE TABLE IF NOT EXISTS carrinho(
               id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
-              id_produto INTEGER(8),
               nome_produto VARCHAR(60),
               preco_produto VARCHAR(60),
               quantidade INTEGER(6)
@@ -449,7 +441,7 @@ def loja(l, s):
                         id_produto = produto_escolhido[0]
                         nome_produto = produto_escolhido[1]
                         valor_produto = produto_escolhido[2]
-                        insert_carrinho(id_produto, nome_produto, valor_produto, quantidade)
+                        insert_carrinho(nome_produto, valor_produto, quantidade)
                         id_pedido += 1
                         print(f'{quantidade} {produto_escolhido[1]} comprado!')
                         end_points('Voltando')
@@ -543,7 +535,11 @@ def loja(l, s):
                                     break
                     break
             case '4':
-                dt_compra = datetime.today().strftime('%d-%m-%Y')
+                print('Muito obrigado por comprar em nossa loja!!!')
+                sleep(1)
+                print('Volte sempre!!!\n\n')
+                end_points('Voltando')
+                break
             case _:
                 print('Inválido! Informe corretamente!!!')
                 sleep(1)
@@ -551,11 +547,11 @@ def loja(l, s):
                 continue
 
 
-def insert_carrinho(id_prod, nome, valor, quant):
-    valores = [id_prod, nome, valor, quant]
+def insert_carrinho(nome, valor, quant):
+    valores = [nome, valor, quant]
     query_insert_carrinho = """
-        INSERT INTO carrinho (id_produto, nome_produto, preco_produto, quantidade)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO carrinho (nome_produto, preco_produto, quantidade)
+        VALUES (?, ?, ?)
     """
     with conn:
         cursor.execute(query_insert_carrinho, valores)
@@ -570,7 +566,7 @@ def mostrar_carrinho():
         cursor.execute(query_mostrar_carrinho)
         carrinho = cursor.fetchall()
     
-    print(tabulate(carrinho, headers=["ID PEDIDO", "ID PRODUTO", "NOME PRODUTO", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
+    print(tabulate(carrinho, headers=["ID PEDIDO", "NOME PRODUTO", "VALOR UNIDADE", "QUANTIDADE"], tablefmt="fancy_grid"))
     
     return carrinho
 
