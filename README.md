@@ -15,6 +15,7 @@
 Na tela inicial, o usuário pode optar por realizar o <b>login</b>(se ja tiver uma conta cadastrada) ou o <b>cadastro</b>, escolhendo o perfil da conta que deseja realizar, sendo eles o perfil de <b>admin<b/> ou <b>cliente</b>
  </p>
 <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexHOME.png"> </kbd>
+<kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCAD.png"> </kbd>
 </div>
 <div>
  <h3 id="requirements"> 📝 Requisitos</h3>
