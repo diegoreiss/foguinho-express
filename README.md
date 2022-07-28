@@ -10,8 +10,8 @@
  </p>
 </div>
 <div>
- <h3 id="about_project">Sobre o Projeto</h3>
+ <h3 id="about_project"> 🛠️ Sobre o Projeto</h3>
 </div>
 <div>
- <h3 id="requirements">Requisitos</h3>
+ <h3 id="requirements"> 📝 Requisitos</h3>
 </div>
