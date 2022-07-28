@@ -16,8 +16,8 @@ Na tela inicial, o usuário pode optar por realizar o <b>login</b>(se ja tiver u
  </p>
  </div>
 <div align="center">
-	<kbd> <img width="490" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexHOME.png"> </kbd>
-	<kbd> <img width="490" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCAD.png"> </kbd>
+	<kbd> <img width="450" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexHOME.png"> </kbd>
+	<kbd> <img width="450" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCAD.png"> </kbd>
 </div>
 <div>
 </div>
