@@ -33,8 +33,11 @@
     <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCAD.png"> </kbd>
 </div>
 <div>
-    <p>
-    </p>
+    <br>
+    <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta</p>
+</div>
+<div align="center">
+    
 </div>
 <div>
     <h3 id="requirements"> 📃 Requisitos</h3>
