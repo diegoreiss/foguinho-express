@@ -1,5 +1,5 @@
 <div align=center>
- <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fogexh1.webp">
+ <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexh1.gif">
 </div>
 <div align=center>
  <p>
