@@ -1,5 +1,5 @@
 <div align=center>
- <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexh1.gif">
+	<img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexh1.gif">
 </div>
 <div align=center>
  <p>
@@ -11,6 +11,9 @@
 </div>
 <div>
  <h3 id="about_project"> 🛠️ Sobre o Projeto</h3>
+ <p>
+		Na tela inicial, o usuário pode optar por realizar o <b>login</b>(se ja tiver uma conta cadastrada) ou o <b>cadastro</b>, escolhendo o perfil da conta que deseja realizar, sendo eles o perfil de <b>admin<b/> ou <b>cliente</b>
+ </p>
 </div>
 <div>
  <h3 id="requirements"> 📝 Requisitos</h3>
