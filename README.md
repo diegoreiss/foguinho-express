@@ -37,7 +37,7 @@
     <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta</p>
 </div>
 <div align="center">
-    
+    <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexDATACAD.png"> </kbd>
 </div>
 <div>
     <h3 id="requirements"> 📃 Requisitos</h3>
