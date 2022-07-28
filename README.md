@@ -41,5 +41,9 @@
     <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexLOGIN.png"> </kbd>
 </div>
 <div>
+    <h3>Conta Admin<h3>
+    <p>Após ter realizado o login com sucesso, o cliente pode gerenciar os produtos ou ver as pessoas cadastradas</p>
+</div>
+<div>
     <h3 id="requirements"> 📃 Requisitos</h3>
 </div>
