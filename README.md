@@ -8,6 +8,19 @@
     <p>
         <a href="#about_project">Sobre o Projeto</a> 🔹 <a href="#requirements">Requisitos</a>
     </p>
+<div align=center>
+    <table>
+        <tr>
+            <th>Tecnologias Utilizadas</th>
+        </tr>
+        <tr>
+            <td>
+                <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54">
+                <img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white">
+            </td>
+        </tr>
+    </table>
+</div>
 </div>
 <div>
     <h3 id="about_project"> 🛠️ Sobre o Projeto</h3>
@@ -18,6 +31,10 @@
 <div align="center">
     <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexHOME.png"> </kbd>
     <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCAD.png"> </kbd>
+</div>
+<div>
+    <p>
+    </p>
 </div>
 <div>
     <h3 id="requirements"> 📃 Requisitos</h3>
