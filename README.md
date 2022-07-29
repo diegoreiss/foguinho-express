@@ -52,8 +52,9 @@
     <h3>Conta Cliente</h3>
     <p>Logado na conta de cliente, o cliente pode ver seus dados cadastrados, seu histórico de compras ou ir para a loja comprar seus produtos:</p>
 </div>
-<div>
-    
+<div align=center>
+    <kbd> <img width="400"src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexCLIENTEPAGE.PNG"> </kbd>
+   <kbd> <img width="400" height="500" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexLOJA.PNG"> </kbd>
 </div>
 </div>
 <div>
