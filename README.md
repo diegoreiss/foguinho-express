@@ -85,7 +85,7 @@
     OBS: Ao instalar o Python, o SQLite é adicionado por padrão.
     <hr>
     <p>
-        Para aqueles que so desejam testar o projeto, dentro da pasta project existe um arquivo executável:
+        Para aqueles que so desejam testar o projeto, dentro da pasta <code>project</code> existe um arquivo executável:
     </p>
 </div>
 
@@ -93,4 +93,5 @@
 ```
 foguinho-express/project/main.exe
 ```
-OBS: É necessário que esse arquivo seja executado dentro da pasta `project`
+- OBS: É necessário que esse arquivo seja executado dentro da pasta `project`
+- Recomendo fazer o download do projeto inteiro para executar
