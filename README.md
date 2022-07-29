@@ -45,8 +45,8 @@
     <p>Após ter realizado o login com sucesso, o admin pode gerenciar os produtos adicionando, removendo ou visualizando eles</p>:
 </div>
 <div align="center">
-    <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexADMINP.PNG"> </kbd>
-    <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexPRODUTOCAD.PNG"> </kbd>
+    <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexADMINP.PNG"> </kbd>
+    <kbd> <img widht="400" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexPRODUTOCAD.PNG"> </kbd>
 </div>
 <div>
     <h3>Conta Cliente</h3>
