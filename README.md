@@ -34,7 +34,7 @@
 </div>
 <div>
     <br>
-    <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta</p>:
+    <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta:</p>
 </div>
 <div align="center">
     <kbd> <img width="400"  src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexDATACAD.png"> </kbd>
@@ -42,7 +42,7 @@
 </div>
 <div>
     <h3>Conta Admin</h3>
-    <p>Após ter realizado o login com sucesso, o admin pode gerenciar os produtos adicionando, removendo ou visualizando eles</p>:
+    <p>Após ter realizado o login com sucesso, o admin pode gerenciar os produtos adicionando, removendo ou visualizando eles:</p>
 </div>
 <div align="center">
     <kbd> <img width="400" height="200" src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexADMINP.PNG"> </kbd>
@@ -50,7 +50,7 @@
 </div>
 <div>
     <h3>Conta Cliente</h3>
-    <p>Logado na conta de cliente, o cliente pode ver seus dados cadastrados, seu histórico de compras ou ir para a loja comprar seus produtos</p>:
+    <p>Logado na conta de cliente, o cliente pode ver seus dados cadastrados, seu histórico de compras ou ir para a loja comprar seus produtos:</p>
 </div>
 <div>
     
