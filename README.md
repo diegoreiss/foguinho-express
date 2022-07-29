@@ -25,7 +25,7 @@
 <div>
     <h3 id="about_project"> 🛠️ Sobre o Projeto</h3>
     <p>
-        Na tela inicial, o usuário pode optar por realizar o <b>login</b>(se ja tiver uma conta cadastrada) ou o <b>cadastro</b>, escolhendo o perfil da conta que deseja realizar, sendo eles o perfil de <b>admin<b/> ou <b>cliente</b>
+        Na tela inicial, o usuário pode optar por realizar o <b>login</b>(se ja tiver uma conta cadastrada) ou o <b>cadastro</b>, escolhendo o perfil da conta que deseja realizar, sendo eles o perfil de <b>admin<b/> ou <b>cliente</b>:
     </p>
 </div>
 <div align="center">
@@ -34,7 +34,7 @@
 </div>
 <div>
     <br>
-    <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta</p>
+    <p>Informando os dados do cadastro, o usuário poderá realizar o login referente ao seu perfil de conta</p>:
 </div>
 <div align="center">
     <kbd> <img width="400"  src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexDATACAD.png"> </kbd>
@@ -42,7 +42,19 @@
 </div>
 <div>
     <h3>Conta Admin</h3>
-    <p>Após ter realizado o login com sucesso, o cliente pode gerenciar os produtos ou ver as pessoas cadastradas</p>
+    <p>Após ter realizado o login com sucesso, o admin pode gerenciar os produtos adicionando, removendo ou visualizando eles</p>:
+</div>
+<div align="center">
+    <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexADMINP.PNG"> </kbd>
+    <kbd> <img src="https://github.com/diegoreiss/foguinho-express/blob/main/images/fexPRODUTOCAD.PNG"> </kbd>
+</div>
+<div>
+    <h3>Conta Cliente</h3>
+    <p>Logado na conta de cliente, o cliente pode ver seus dados cadastrados, seu histórico de compras ou ir para a loja comprar seus produtos</p>:
+</div>
+<div>
+    
+</div>
 </div>
 <div>
     <h3 id="requirements"> 📃 Requisitos</h3>
