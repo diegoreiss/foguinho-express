@@ -59,4 +59,38 @@
 </div>
 <div>
     <h3 id="requirements"> 📃 Requisitos</h3>
+    <p>Para aqueles que desejam colaborar ou utilizar parte do projeto, seguem os requisitos abaixo:</p><br>
+    <table>
+        <tr>
+            <th>Tecnologia</th>
+            <th>Versão</th>
+        </tr>
+        <tr>
+            <td>
+                <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"
+            </td>
+            <td>
+                <a href="https://www.python.org/downloads/release/python-3100/">3.10</a> ou acima
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white">
+            </td>
+            <td>
+                <a href="https://www.sqlite.org/index.html">3.7.15</a> ou acima
+            </td>
+        </tr>
+    </table>
+    OBS: Ao instalar o Python, o SQLite é adicionado por padrão.
+    <hr>
+    <p>
+        Para aqueles que so desejam testar o projeto, dentro da pasta project existe um arquivo executável:
+    </p>
 </div>
+
+
+```
+foguinho-express/project/main.exe
+```
+OBS: É necessário que esse arquivo seja executado dentro da pasta `project`
