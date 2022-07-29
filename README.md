@@ -82,12 +82,20 @@
             </td>
         </tr>
     </table>
-    OBS: Ao instalar o Python, o SQLite é adicionado por padrão.
-    <hr>
-    <p>
-        Para aqueles que so desejam testar o projeto, dentro da pasta <code>project</code> existe um arquivo executável:
-    </p>
 </div>
+    <ul>
+        <li>OBS: Ao instalar o Python, o SQLite é adicionado por padrão.</li>
+        <li>Necessário instalar as dependências:</li>
+    </ul>
+    
+```
+pip install -r requirements.txt
+```
+
+<hr>
+<p>
+    Para aqueles que so desejam testar o projeto, dentro da pasta <code>project</code> existe um arquivo executável:
+</p>
 
 
 ```
